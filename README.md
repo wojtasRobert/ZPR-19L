@@ -1,5 +1,5 @@
 # Projekt z przedmiotu ZPR, semestr letni 2019
-* prowadzący: mgr inż. Konrad Grochowski, k.grochowski(at)ii.pw.edu.pl
+* prowadzący: mgr inż. Konrad Grochowski, k.grochowski@ii.pw.edu.pl
 * konsultacje: piątek 14:15 - 16:00, pok. 314
 * termin oddania dokumentacji wstępnej: 1 kwietnia (5 pkt)
 * termin oddania szkieletu aplikacji: 1 maja (5 pkt)
