@@ -4,6 +4,8 @@
 
 ## Docelowa funkcjonalność aplikacji
 
+Celem projektu jest stworzenie aplikacji służącej do monitorowania procesów działających w systemie. Aplikacja zostanie napisana w architekturze klient-serwer. Założeniem projektu jest stworzenie programu, z którego użytkownik będzie mógł w sposób wygodny oraz wydajny czerpać informacje na temat zużycia zasobów przez poszczególne procesy. Główną funkcją programu będzie monitorowanie poziomu zużycia pamięci RAM oraz czasu procesora, a także realizacja żądań użytkownika, który będzie miał możliwość dodania i usunięcia procesów do obserwowanych, narzucenia ograniczeń na zasoby wykorzystywane przez procesy oraz wyświetlania informacji na temat obserwowanych procesow. Ważnym elementem monitora zasobów będzie funkcja zawiadamiania użytkownika o naruszeniu ograniczeń przez procesy. W założeniu, taka sytuacja skutkować będzie wysłaniem wiadomości e-mail na adres użytkownika.
+
 ## Zakres realizowanych funkcji
 
 ## Opis architektury
