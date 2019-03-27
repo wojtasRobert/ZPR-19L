@@ -1,6 +1,11 @@
-% Monitor zasobów -- dokumentacja wstępna
-% Robert Wojtaś, Krystian Chachuła
-% 27 marca 2019
+---
+title: Monitor zasobów -- dokumentacja wstępna
+author: Robert Wojtaś, Krystian Chachuła
+date: 27 marca 2019
+lang: pl-PL
+geometry:
+    - margin=1in
+---
 
 ## Docelowa funkcjonalność aplikacji
 
@@ -19,7 +24,7 @@ Główną funkcją programu będzie monitorowanie poziomu zużycia pamięci RAM 
 
 ## Architektura aplikacji
 
-![Diagram architektury](diagram.png)
+![Diagram architektury](diagram.pdf)
 
 Oprogramowanie będzie składało się z serwera (usługi) i klienta. Poprzez klienta możliwe będzie pobieranie i wyświetlanie informacji o działaniu usługi oraz wydawanie poleceń.
 
