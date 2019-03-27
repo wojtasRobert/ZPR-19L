@@ -16,13 +16,6 @@ Celem projektu jest stworzenie aplikacji służącej do monitorowania procesów 
 
 ### Klient
 
-Funkcje klienta, służące do kontrolowania usługi:
-
-* dodaj proces do obserwowanych
-* usuń proces z obserwowanych
-* pokaż informacje na temat obserwowanego procesu
-* ustaw/zmień ograniczenia wykorzystania zasobów przez obserwowany proces
-
 ### Usługa
 
 
@@ -43,7 +36,6 @@ Funkcje klienta, służące do kontrolowania usługi:
 
 
 # TODO
-* funkcje klienta
 * opis architektury
   * serwer
     * moduł akwizycji danych
