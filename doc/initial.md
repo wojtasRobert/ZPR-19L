@@ -4,7 +4,7 @@
 
 ## Docelowa funkcjonalność aplikacji
 
-Celem projektu jest stworzenie aplikacji służącej do monitorowania procesów działających w systemie. Aplikacja zostanie napisana w architekturze klient-serwer. Oba moduły będą pracowały lokalnie w obrębie jednego komputera i będą uruchamiane odzielnie.  Komunikacja między klientem i serwerem realizowana będzie z wykorzystaniem protokołu TCP, służącego do przyjmowania poleceń od klienta. Założeniem projektu jest stworzenie programu, z którego użytkownik będzie mógł w sposób wygodny oraz wydajny czerpać informacje na temat zużycia zasobów przez poszczególne procesy. 
+Celem projektu jest stworzenie aplikacji służącej do monitorowania procesów działających w systemie. Aplikacja zostanie napisana w architekturze klient-serwer. Oba moduły będą pracowały lokalnie w obrębie jednego komputera i będą uruchamiane odzielnie.  Komunikacja między klientem i serwerem realizowana będzie z wykorzystaniem protokołu TCP, służącego do przyjmowania poleceń od klienta. Założeniem projektu jest stworzenie programu, z którego użytkownik będzie mógł w sposób wygodny oraz wydajny czerpać informacje na temat zużycia zasobów przez monitorowane procesy. 
 
 Główną funkcją programu będzie monitorowanie poziomu zużycia pamięci RAM oraz czasu procesora, a także realizacja żądań użytkownika.
 
