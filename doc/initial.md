@@ -4,9 +4,20 @@
 
 ## Docelowa funkcjonalność aplikacji
 
-Celem projektu jest stworzenie aplikacji służącej do monitorowania procesów działających w systemie. Aplikacja zostanie napisana w architekturze klient-serwer. Założeniem projektu jest stworzenie programu, z którego użytkownik będzie mógł w sposób wygodny oraz wydajny czerpać informacje na temat zużycia zasobów przez poszczególne procesy. Główną funkcją programu będzie monitorowanie poziomu zużycia pamięci RAM oraz czasu procesora, a także realizacja żądań użytkownika, który będzie miał możliwość dodania i usunięcia procesów do obserwowanych, narzucenia ograniczeń na zasoby wykorzystywane przez procesy oraz wyświetlania informacji na temat obserwowanych procesow. Ważnym elementem monitora zasobów będzie funkcja zawiadamiania użytkownika o naruszeniu ograniczeń przez procesy. W założeniu, taka sytuacja skutkować będzie wysłaniem wiadomości e-mail na adres użytkownika.
+Celem projektu jest stworzenie aplikacji służącej do monitorowania procesów działających w systemie. Aplikacja zostanie napisana w architekturze klient-serwer. Oba moduły będą pracowały lokalnie w obrębie jednego komputera i będą uruchamiane odzielnie.  Komunikacja między klientem i serwerem realizowana będzie z wykorzystaniem udostępnianego przez usługę gniazda sieci TCP, służącego do przyjmowania poleceń od klienta. Założeniem projektu jest stworzenie programu, z którego użytkownik będzie mógł w sposób wygodny oraz wydajny czerpać informacje na temat zużycia zasobów przez poszczególne procesy. 
 
-## Zakres realizowanych funkcji
+Główną funkcją programu będzie monitorowanie poziomu zużycia pamięci RAM oraz czasu procesora, a także realizacja żądań użytkownika.
+
+*, który będzie miał możliwość dodania i usunięcia procesów do obserwowanych, narzucenia ograniczeń na zasoby wykorzystywane przez procesy oraz wyświetlania informacji na temat obserwowanych procesow. Ważnym elementem monitora zasobów będzie funkcja zawiadamiania użytkownika o naruszeniu ograniczeń przez procesy. W założeniu, taka sytuacja skutkować będzie wysłaniem wiadomości e-mail na adres użytkownika.*
+
+### Zakres realizowanych funkcji
+* uruchamianie lub wyłączanie procesu
+* dodawanie lub usuwanie procesów z listy obserwowanych
+* monitorowanie zasobów procesów obserwowanych 
+* zbieranie informacji i statystyk dotyczących procesów
+* pilnowanie ograniczeń nałożonych na poszczególne procesy
+* resetowanie procesów w przypadku przekroczenia ograniczeń
+* informowanie użytkownika o przekroczeniu ograniczeń przez proces
 
 ## Opis architektury
 
@@ -17,11 +28,6 @@ Celem projektu jest stworzenie aplikacji służącej do monitorowania procesów 
 ### Klient
 
 ### Usługa
-
-
-* udostępnia w sieci gniazdo TCP, służące do przyjmowania poleceń od klienta
-* monitorowanie %MEM oraz %CPU
-
 
 #### Moduł akwizycji danych
 
