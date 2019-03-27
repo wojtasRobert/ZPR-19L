@@ -8,9 +8,17 @@
 
 ## Opis architektury
 
-
 ![Diagram architektury](diagram.png)
 
+Oprogramowanie będzie składało się z serwera (usługi) i klienta. Poprzez klienta możliwe będzie pobieranie i wyświetlanie informacji o działaniu usługi oraz wydawanie poleceń.
+
+### Serwer (usługa)
+
+Napisany w C++ serwer będzie składał się z kilku modułów. Odpowiedzialność każdego z nich umieszczona jest na diagramie.
+
+### Klient
+
+Klient, napisany w języku Python, będzie stanowił konsolowy interfejs użytkownika do usługi.
 
 ### Klient
 
