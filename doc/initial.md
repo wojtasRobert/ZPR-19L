@@ -1,4 +1,8 @@
-# Monitor zasobów
+% Monitor zasobów -- dokumentacja wstępna
+% Robert Wojtaś, Krystian Chachuła
+% 27 marca 2019
+
+![Diagram architektury](diagram.png)
 
 ## Usługa
 
