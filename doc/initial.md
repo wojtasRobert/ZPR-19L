@@ -8,8 +8,6 @@ Celem projektu jest stworzenie aplikacji służącej do monitorowania procesów 
 
 Główną funkcją programu będzie monitorowanie poziomu zużycia pamięci RAM oraz czasu procesora, a także realizacja żądań użytkownika.
 
-*, który będzie miał możliwość dodania i usunięcia procesów do obserwowanych, narzucenia ograniczeń na zasoby wykorzystywane przez procesy oraz wyświetlania informacji na temat obserwowanych procesow. Ważnym elementem monitora zasobów będzie funkcja zawiadamiania użytkownika o naruszeniu ograniczeń przez procesy. W założeniu, taka sytuacja skutkować będzie wysłaniem wiadomości e-mail na adres użytkownika.*
-
 ### Zakres realizowanych funkcji
 * uruchamianie lub wyłączanie procesu
 * dodawanie lub usuwanie procesów z listy obserwowanych
@@ -19,7 +17,7 @@ Główną funkcją programu będzie monitorowanie poziomu zużycia pamięci RAM 
 * resetowanie procesów w przypadku przekroczenia ograniczeń
 * informowanie użytkownika o przekroczeniu ograniczeń przez proces
 
-## Opis architektury
+## Architektura aplikacji
 
 ![Diagram architektury](diagram.png)
 
@@ -33,31 +31,8 @@ Napisany w C++ serwer będzie składał się z kilku modułów. Odpowiedzialnoś
 
 Klient, napisany w języku Python, będzie stanowił konsolowy interfejs użytkownika do usługi.
 
-### Klient
+## Uruchamianie aplikacji
 
-### Usługa
+Aby uruchomić serwer, trzeba będzie uruchomić wiersz poleceń i uruchomić proces serwera. Podanie konfiguracji środowiskowej będzie możliwe poprzez argumenty wykonania lub tekstowy plik konfiguracyjny. Po uruchomieniu, serwer kontynuuje działanie.
 
-#### Moduł akwizycji danych
-
- TODO: to są różne pomysły, należy coś wybrać
- 
- 
-##### Linux
-
-* `ps -p $PID -o %cpu,%mem,cmd`
-* https://stackoverflow.com/a/64166
-
-
-
-# TODO
-* opis architektury
-  * serwer
-    * moduł akwizycji danych
-    * moduł kom z klientem
-    * moduł zarządzania procesami
-    * moduł wysyłania maili
-    * moduł zarządzania konfiguracją (wczytywanie z pliku?)
-    * moduł sprawdzania ograniczeń
-* diagram: klient, serwer, procesy, lista procesów i jakie informacje są wymieniane
-* fork czy podpinanie procesu
-* serwer uruchamiany oddzielnie i klient oddzielnie
+Każde uruchomienie klienta z wiersza poleceń będzie miało charakter jednorazowy. Każde polecenie do serwera będzie miało przyporządkowany argument wykonania (podobnie jak *Docker*). Np. `client set-mem-limit proces1 1024M`.
