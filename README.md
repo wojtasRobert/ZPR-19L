@@ -72,3 +72,29 @@ dokumentacji końcowej jest opis napotkanych problemów i popełnionych
 błędów. Krytyczne spojrzenie na własną pracę świadczy o tym, że zespół 
 przyswoił sobie nową wiedzę i nie popełni podobnych błędów w 
 przyszłości.
+
+## Info z konsultacji
+
+### Wskazówki co do dokumentacji
+
+W dokumentacji mogą znajdować się:
+
+* user stories
+* use cases
+* wypisanie funkcjonalności
+
+Należy unikać *poetyckich* opisów.
+
+Z dokumentacji powinnien znajdować sie opis architektury bez diagramu klas oraz informacje na temat tego jak będzie uruchamiana aplikacja.
+
+### Wymagania co do projektu Monitor zasobów 2
+
+* brak GUI
+* monitor jednego procesu
+* usługa + klient do sterowania nią (a'la *docker*), polecenia typu:
+    * obserwuj proces
+    * przestań obserwować proces
+    * ustaw ograniczenia
+* logowanie (np. SQLite) **lub** wysyłanie na maila powiadomień o przekroczeniu ograniczeń
+* restartowanie procesu kiedy przekroczy ograniczenia
+* przy wykorzystaniu sieci, należy odpowiednio reagować na nagły brak połączenia
