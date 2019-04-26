@@ -1,4 +1,25 @@
 # Projekt z przedmiotu ZPR, semestr letni 2019
+
+## Kompilacja
+
+### Linux
+
+```bash
+git clone --recurse-submodules  https://github.com/wojtasRobert/ZPR-19L.git
+cd ZPR-19L/
+mkdir build
+cd build
+cmake ..
+make
+
+# Test
+./test_executable
+
+# Daemon
+./resource_monitor
+```
+
+## Informacje
 * prowadzący: mgr inż. Konrad Grochowski, k.grochowski@ii.pw.edu.pl
 * konsultacje: piątek 14:15 - 16:00, pok. 314
 * termin oddania dokumentacji wstępnej: 1 kwietnia (5 pkt)
