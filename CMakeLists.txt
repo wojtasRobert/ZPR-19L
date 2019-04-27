@@ -3,6 +3,7 @@ project(resource_monitor)
 enable_testing()
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 add_subdirectory(vendor/Simple-Web-Server Simple-Web-Server)
 
@@ -19,3 +20,10 @@ target_include_directories(test_executable PRIVATE ${Boost_INCLUDE_DIRS} vendor/
 target_compile_definitions(test_executable PRIVATE "BOOST_TEST_DYN_LINK=1")
 target_link_libraries(test_executable ${Boost_LIBRARIES} simple-web-server)
 add_test(NAME tests COMMAND test_executable)
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+    include(CodeCoverage)
+    APPEND_COVERAGE_COMPILER_FLAGS()
+    set(COVERAGE_GCOVR_EXCLUDES ${PROJECT_SOURCE_DIR}/vendor ${PROJECT_SOURCE_DIR}/test)
+    SETUP_TARGET_FOR_COVERAGE_GCOVR_HTML(NAME ctest_coverage EXECUTABLE test_executable DEPENDENCIES test_executable)
+endif()
