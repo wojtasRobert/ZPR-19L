@@ -3,12 +3,12 @@
 #include <chrono>
 #include <boost/test/unit_test.hpp>
 #include <client_http.hpp>
-#include <resource_monitor/clientinterface.hpp>
+#include <resmond/clientinterface.hpp>
 
 using HttpClient = SimpleWeb::Client<SimpleWeb::HTTP>;
 
 BOOST_AUTO_TEST_CASE(clientinterface_test) {
-    ClientInterface clientInterface("127.0.0.1", 8081);
+    resmond::ClientInterface clientInterface("127.0.0.1", 8081);
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
     HttpClient client("localhost:8081");

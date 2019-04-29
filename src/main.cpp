@@ -1,7 +1,7 @@
 #include <iostream>
 #include <boost/program_options.hpp>
 #include <server_http.hpp>
-#include <resource_monitor/clientinterface.hpp>
+#include <resmond/clientinterface.hpp>
 
 int main(int argc, char *argv[]) {
     namespace po = boost::program_options;
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
         std::cout << "Hello, unknown.\n";
     }
 
-    ClientInterface clientInterface("127.0.0.1", 8081);
+    resmond::ClientInterface clientInterface("127.0.0.1", 8081);
     clientInterface.joinServerThread();
 
     return 0;
