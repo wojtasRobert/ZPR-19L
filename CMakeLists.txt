@@ -12,7 +12,7 @@ find_package(Boost 1.56 REQUIRED COMPONENTS system thread filesystem program_opt
 file(GLOB MAIN_SRC src/resource_monitor/*.cpp include/resource_monitor/*.hpp)
 add_executable(resource_monitor ${MAIN_SRC} src/main.cpp)
 target_include_directories(resource_monitor PRIVATE ${Boost_INCLUDE_DIRS} vendor/Simple-Web-Server include)
-target_link_libraries(resource_monitor ${Boost_LIBRARIES} simple-web-server)
+target_link_libraries(resource_monitor simple-web-server)
 
 file(GLOB TEST_SRC test/*.cpp)
 add_executable(test_executable ${TEST_SRC} ${MAIN_SRC})
