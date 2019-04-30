@@ -3,6 +3,11 @@
 #include <server_http.hpp>
 #include <resmond/clientinterface.hpp>
 
+#ifndef _WIN32
+    #include <sys/types.h>
+    #include <sys/sysinfo.h>
+#endif
+
 int main(int argc, char *argv[]) {
     namespace po = boost::program_options;
 
@@ -25,6 +30,21 @@ int main(int argc, char *argv[]) {
     } else {
         std::cout << "Hello, unknown.\n";
     }
+
+    unsigned long long virtualMemUsed;
+#ifdef _WIN32
+     MEMORYSTATUSEX memInfo;
+     memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+     GlobalMemoryStatusEx(&memInfo);
+     virtualMemUsed = memInfo.ullTotalPageFile - memInfo.ullAvailPageFile;
+#else
+    struct sysinfo memInfo{};
+    sysinfo (&memInfo);
+    virtualMemUsed = memInfo.totalram - memInfo.freeram;
+    virtualMemUsed += memInfo.totalswap - memInfo.freeswap;
+    virtualMemUsed *= memInfo.mem_unit;
+#endif
+    std::cout << "Total virtual memory used: " << virtualMemUsed << std::endl;
 
     resmond::ClientInterface clientInterface("127.0.0.1", 8081);
     clientInterface.joinServerThread();
