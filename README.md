@@ -16,7 +16,10 @@ make
 ./test_executable
 
 # Daemon
-./resource_monitor
+./resmond
+
+# Coverage
+make ctest_coverage
 ```
 
 ### Windows
