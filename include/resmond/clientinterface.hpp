@@ -5,13 +5,19 @@
 #include <string>
 #include <server_http.hpp>
 
+#include <resmond/processmanager.hpp>
+
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 
 namespace resmond {
 
     class ClientInterface {
     public:
-        ClientInterface(const std::string &address, unsigned short port);
+        ClientInterface(
+            const std::string &address,
+            unsigned short port,
+            std::shared_ptr<ProcessManager> processManager
+        );
 
         void start();
 
@@ -24,8 +30,11 @@ namespace resmond {
 
         void initEndpoints();
 
+        void respondWithError(const std::shared_ptr<HttpServer::Response>& response, const std::string& msg);
+
         std::thread serverThread;
         HttpServer server;
+        std::shared_ptr<ProcessManager> processManager;
     };
 
 }

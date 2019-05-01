@@ -46,7 +46,8 @@ int main(int argc, char *argv[]) {
 #endif
     std::cout << "Total virtual memory used: " << virtualMemUsed << std::endl;
 
-    resmond::ClientInterface clientInterface("127.0.0.1", 8081);
+    auto processManager = std::make_shared<resmond::ProcessManager>();
+    resmond::ClientInterface clientInterface("127.0.0.1", 8081, processManager);
     clientInterface.joinServerThread();
 
     return 0;
