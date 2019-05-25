@@ -30,7 +30,7 @@ namespace resmond {
 
         void initEndpoints();
 
-        void respondWithError(const std::shared_ptr<HttpServer::Response>& response, const std::string& msg);
+        void respondWithError(const std::shared_ptr<HttpServer::Response> &response, const std::string &msg);
 
         std::thread serverThread;
         HttpServer server;

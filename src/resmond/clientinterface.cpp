@@ -78,8 +78,8 @@ namespace resmond {
     }
 
     void ClientInterface::respondWithError(
-        const std::shared_ptr<HttpServer::Response>& response,
-        const std::string& msg
+        const std::shared_ptr<HttpServer::Response> &response,
+        const std::string &msg
     ) {
         boost::property_tree::ptree pt;
         pt.put("msg", msg);

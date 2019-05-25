@@ -16,7 +16,7 @@ namespace resmond {
          * @return new child's id
          */
         template<typename ...Args>
-        int spawn(Args&&...args);
+        int spawn(Args &&...args);
 
         /*!
          * Terminates a child.
@@ -25,21 +25,21 @@ namespace resmond {
          */
         void terminate(int id);
 
+        const std::map<pid_t, std::shared_ptr<boost::process::child>> &getChildren() const;
+
 
     private:
-        int freeId = 0;
-        std::map<int, boost::process::child> children;
+        std::map<pid_t, std::shared_ptr<boost::process::child>> children;
     };
 
     template<typename... Args>
     int ProcessManager::spawn(Args &&... args) {
-        children[freeId] = boost::process::child(
+        auto child = std::make_shared<boost::process::child>(
             std::forward<Args>(args)...,
             boost::process::std_out > boost::process::null,
             boost::process::std_err > boost::process::null
         );
-
-        return freeId++;
+        children[child->id()] = child;
     }
 
 }
