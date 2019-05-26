@@ -1,0 +1,52 @@
+#!/bin/env python3
+# Client for the resource monitor daemon
+import argparse
+import requests
+from sys import stderr
+
+
+def do_status(args):
+    response: requests.Response = requests.post('http://127.0.0.1:8081/status')
+
+    print("{:>6}\t{:>5}\t{:>5}\t{}".format("ID", "CPU%", "MEM%", "COMMAND"))
+    for child in response.json()['children']:
+        print("{id:6d}\t{cpu:5.1f}\t{memory:5.1f}\t{command}".format(
+            id=int(child['id']),
+            cpu=float(child['resources']['cpu']),
+            memory=float(child['resources']['memory']),
+            command=child['command'],
+        ))
+
+
+def do_spawn(args):
+    response: requests.Response = requests.post('http://127.0.0.1:8081/spawn', json={'command': args.command})
+    print(response.json()['id'])
+
+
+def do_terminate(args):
+    response: requests.Response = requests.post('http://127.0.0.1:8081/terminate', json={'id': args.id})
+    print(response.json()['id'])
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers()
+
+    parser_status = subparsers.add_parser('status')
+    parser_status.set_defaults(func=do_status)
+
+    parser_spawn = subparsers.add_parser('spawn')
+    parser_spawn.add_argument('command')
+    parser_spawn.set_defaults(func=do_spawn)
+
+    parser_terminate = subparsers.add_parser('terminate')
+    parser_terminate.add_argument('id')
+    parser_terminate.set_defaults(func=do_terminate)
+
+    args = parser.parse_args()
+    try:
+        args.func(args)
+    except AttributeError:
+        parser.print_help()
+    except requests.exceptions.ConnectionError:
+        print("Could not connect to the daemon. Is it running?", file=stderr)

@@ -66,37 +66,46 @@ namespace resmond {
     }
 
     void ClientInterface::spawnHandler(ClientInterface::Response response, ClientInterface::Request request) {
-        boost::property_tree::ptree pt;
+        boost::property_tree::ptree pt, rpt;
         boost::property_tree::read_json(request->content, pt);
 
         try {
-            int childId = processManager->spawn(pt.get<std::string>("executable"));
-            response->write(std::to_string(childId));
+            int childId = processManager->spawn(pt.get<std::string>("command"));
+            rpt.put("id", childId);
         } catch (boost::process::process_error &e) {
             respondWithError(response, e.what());
         }
+
+        std::stringstream ss;
+        boost::property_tree::json_parser::write_json(ss, rpt);
+        response->write(ss.str());
     }
 
     void ClientInterface::terminateHandler(Response response, Request request) {
-        boost::property_tree::ptree pt;
+        boost::property_tree::ptree pt, rpt;
         boost::property_tree::read_json(request->content, pt);
 
         try {
-            processManager->terminate(pt.get<int>("id"));
-            response->write(SimpleWeb::StatusCode::success_ok);
+            int id = pt.get<int>("id");
+            processManager->terminate(id);
+            rpt.put("id", id);
         } catch (resmond::NoSuchChildError &) {
             respondWithError(response, "There is no child the with given id");
         }
+
+        std::stringstream ss;
+        boost::property_tree::json_parser::write_json(ss, rpt);
+        response->write(ss.str());
     }
 
     void ClientInterface::statusHandler(Response response, Request request) {
-        boost::property_tree::ptree pt;
-        boost::property_tree::ptree children;
+        boost::property_tree::ptree rpt, children;
 
         const auto &resourceUsage = resourceMonitor->getResourceUsage();
         for (const auto &child : processManager->getChildren()) {
             boost::property_tree::ptree cpt, usage;
             cpt.put("id", child.first);
+            cpt.put("command", std::get<1>(child.second));
             usage.put("cpu", std::get<0>(resourceUsage.at(child.first)));
             usage.put("memory", std::get<1>(resourceUsage.at(child.first)));
             cpt.add_child("resources", usage);
@@ -104,10 +113,10 @@ namespace resmond {
             children.push_back(std::make_pair("", cpt));
         }
 
-        pt.add_child("children", children);
+        rpt.add_child("children", children);
 
         std::stringstream ss;
-        boost::property_tree::json_parser::write_json(ss, pt);
+        boost::property_tree::json_parser::write_json(ss, rpt);
         response->write(ss.str());
     }
 

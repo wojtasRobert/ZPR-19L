@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     auto resourceMonitor = std::make_shared<resmond::LinuxResourceMonitor>(processManager);
 
     // FOR DEBUGGING PURPOSES
-    processManager->spawn("yes");
+    processManager->spawn("sleep 1000");
     std::cout << std::endl << "PID\tCPU%\tMEM%" << std::endl << std::endl;
     std::thread resourceMonitorThread([&resourceMonitor]() {
         while (true) {

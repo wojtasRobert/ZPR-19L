@@ -10,6 +10,7 @@ namespace resmond {
         processManager) {}
 
     void LinuxResourceMonitor::update() {
+        // TODO: simplify this mess
         namespace bp = boost::process;
 
         auto children = processManager->getChildren();
@@ -22,7 +23,7 @@ namespace resmond {
         std::string propertyList = "top -b -n 1 ";
 
         for (const auto &child : children) {
-            propertyList += "-p " + std::to_string(child.second->id()) + " ";
+            propertyList += "-p " + std::to_string(std::get<0>(child.second)->id()) + " ";
         }
 
         bp::ipstream is;
@@ -37,7 +38,7 @@ namespace resmond {
 
             if (i >= 7) {
                 int pid = std::stoi(result[0]);
-                if (children[pid]->running()) {
+                if (std::get<0>(children[pid])->running()) {
                     resourceUsage[pid] = {std::stod(result[8]), std::stod(result[9])};
                 }
             }

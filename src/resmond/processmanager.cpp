@@ -10,8 +10,14 @@ namespace resmond {
         children.erase(id);
     }
 
-    const std::map<pid_t, std::shared_ptr<boost::process::child>> &ProcessManager::getChildren() const {
+    const std::map<pid_t, ProcessManager::Child> &ProcessManager::getChildren() const {
         return children;
+    }
+
+    int ProcessManager::spawn(std::string command) {
+        auto child = std::make_shared<boost::process::child>(command);
+        children[child->id()] = std::make_tuple(child, command);
+        return child->id();
     }
 
 }
