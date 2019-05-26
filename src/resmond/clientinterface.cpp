@@ -7,8 +7,9 @@ namespace resmond {
 
     ClientInterface::ClientInterface(
         const std::string &address, unsigned short port,
-        std::shared_ptr<ProcessManager> processManager
-    ) : processManager(processManager) {
+        std::shared_ptr<ProcessManager> processManager,
+        std::shared_ptr<ResourceMonitor> resourceMonitor
+    ) : processManager(processManager), resourceMonitor(resourceMonitor) {
         initServer(address, port);
         initEndpoints();
         start();
@@ -45,36 +46,11 @@ namespace resmond {
             response->write("Hello.");
         };
 
-        server.resource["^/spawn$"]["POST"] = [this](
-            std::shared_ptr<HttpServer::Response> response,
-            std::shared_ptr<HttpServer::Request> request
-        ) {
-            boost::property_tree::ptree pt;
-            boost::property_tree::read_json(request->content, pt);
+        server.resource["^/spawn$"]["POST"] = [this](Response res, Request req) { spawnHandler(res, req); };
 
-            try {
-                int childId = processManager->spawn(pt.get<std::string>("executable"));
-                response->write(std::to_string(childId));
-            } catch (boost::process::process_error &e) {
-                respondWithError(response, e.what());
-            }
-        };
+        server.resource["^/terminate$"]["POST"] = [this](Response res, Request req) { terminateHandler(res, req); };
 
-        server.resource["^/terminate$"]["POST"] = [this](
-            std::shared_ptr<HttpServer::Response> response,
-            std::shared_ptr<HttpServer::Request> request
-        ) {
-            boost::property_tree::ptree pt;
-            boost::property_tree::read_json(request->content, pt);
-
-            try {
-                processManager->terminate(pt.get<int>("id"));
-                response->write(SimpleWeb::StatusCode::success_ok);
-            } catch (resmond::NoSuchChildError &) {
-                respondWithError(response, "There is no child the with given id");
-            }
-        };
-
+        server.resource["^/status$"]["POST"] = [this](Response res, Request req) { statusHandler(res, req); };
     }
 
     void ClientInterface::respondWithError(
@@ -87,6 +63,52 @@ namespace resmond {
         std::stringstream ss;
         boost::property_tree::write_json(ss, pt);
         response->write(SimpleWeb::StatusCode::client_error_bad_request, ss.str());
+    }
+
+    void ClientInterface::spawnHandler(ClientInterface::Response response, ClientInterface::Request request) {
+        boost::property_tree::ptree pt;
+        boost::property_tree::read_json(request->content, pt);
+
+        try {
+            int childId = processManager->spawn(pt.get<std::string>("executable"));
+            response->write(std::to_string(childId));
+        } catch (boost::process::process_error &e) {
+            respondWithError(response, e.what());
+        }
+    }
+
+    void ClientInterface::terminateHandler(Response response, Request request) {
+        boost::property_tree::ptree pt;
+        boost::property_tree::read_json(request->content, pt);
+
+        try {
+            processManager->terminate(pt.get<int>("id"));
+            response->write(SimpleWeb::StatusCode::success_ok);
+        } catch (resmond::NoSuchChildError &) {
+            respondWithError(response, "There is no child the with given id");
+        }
+    }
+
+    void ClientInterface::statusHandler(Response response, Request request) {
+        boost::property_tree::ptree pt;
+        boost::property_tree::ptree children;
+
+        const auto &resourceUsage = resourceMonitor->getResourceUsage();
+        for (const auto &child : processManager->getChildren()) {
+            boost::property_tree::ptree cpt, usage;
+            cpt.put("id", child.first);
+            usage.put("cpu", std::get<0>(resourceUsage.at(child.first)));
+            usage.put("memory", std::get<1>(resourceUsage.at(child.first)));
+            cpt.add_child("resources", usage);
+
+            children.push_back(std::make_pair("", cpt));
+        }
+
+        pt.add_child("children", children);
+
+        std::stringstream ss;
+        boost::property_tree::json_parser::write_json(ss, pt);
+        response->write(ss.str());
     }
 
 }

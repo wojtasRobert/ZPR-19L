@@ -6,6 +6,7 @@
 #include <server_http.hpp>
 
 #include <resmond/processmanager.hpp>
+#include <resmond/resourcemonitor.hpp>
 
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 
@@ -16,7 +17,8 @@ namespace resmond {
         ClientInterface(
             const std::string &address,
             unsigned short port,
-            std::shared_ptr<ProcessManager> processManager
+            std::shared_ptr<ProcessManager> processManager,
+            std::shared_ptr<ResourceMonitor> resourceMonitor
         );
 
         void start();
@@ -26,15 +28,25 @@ namespace resmond {
         void joinServerThread();
 
     private:
+        typedef std::shared_ptr<HttpServer::Response> Response;
+        typedef std::shared_ptr<HttpServer::Request> Request;
+
         void initServer(const std::string &address, unsigned short port);
 
         void initEndpoints();
 
         void respondWithError(const std::shared_ptr<HttpServer::Response> &response, const std::string &msg);
 
+        void spawnHandler(Response response, Request request);
+
+        void terminateHandler(Response response, Request request);
+
+        void statusHandler(Response response, Request request);
+
         std::thread serverThread;
         HttpServer server;
         std::shared_ptr<ProcessManager> processManager;
+        std::shared_ptr<ResourceMonitor> resourceMonitor;
     };
 
 }

@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
         }
     }); // <-- FOR DEBUGGING PURPOSES
 
-    resmond::ClientInterface clientInterface("127.0.0.1", 8081, processManager);
+    resmond::ClientInterface clientInterface("127.0.0.1", 8081, processManager, resourceMonitor);
     clientInterface.joinServerThread();
 
     return 0;
