@@ -34,6 +34,10 @@ namespace resmond {
         server.config.port = port;
 
         server.on_error = [](std::shared_ptr<HttpServer::Request> /*request*/, const SimpleWeb::error_code &ec) {
+            if (ec.value() == 2) {
+                return;
+            }
+
             std::cerr << ec.message() << std::endl;
         };
     }
@@ -103,6 +107,9 @@ namespace resmond {
 
         const auto &resourceUsage = resourceMonitor->getResourceUsage();
         for (const auto &child : processManager->getChildren()) {
+            if (!std::get<0>(child.second)->running()) {
+                continue;
+            }
             boost::property_tree::ptree cpt, usage;
             cpt.put("id", child.first);
             cpt.put("command", std::get<1>(child.second));

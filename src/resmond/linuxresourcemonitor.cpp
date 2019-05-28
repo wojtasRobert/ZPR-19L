@@ -16,6 +16,7 @@ namespace resmond {
         auto children = processManager->getChildren();
 
         if (children.empty()) {
+            std::lock_guard<std::mutex> lock(resourceUsageMutex);
             resourceUsage.clear();
             return;
         }
@@ -29,6 +30,7 @@ namespace resmond {
         bp::ipstream is;
         auto top = boost::process::child(propertyList, bp::std_out > is);
 
+        std::lock_guard<std::mutex> lock(resourceUsageMutex);
         resourceUsage.clear();
         std::string line;
         for (int i = 0; top.running() && std::getline(is, line); ++i) {

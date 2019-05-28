@@ -30,6 +30,7 @@ namespace resmond {
 
     private:
         std::map<pid_t, Child> children;
+        mutable std::mutex childrenMutex;
     };
 
 }

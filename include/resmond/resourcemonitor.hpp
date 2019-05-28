@@ -18,6 +18,7 @@ namespace resmond {
     protected:
         std::shared_ptr<resmond::ProcessManager> processManager;
         std::map<pid_t, std::tuple<float, float>> resourceUsage;
+        mutable std::mutex resourceUsageMutex;
     };
 
 }
