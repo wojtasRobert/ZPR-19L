@@ -1,8 +1,9 @@
 #!/bin/env python3
 # Client for the resource monitor daemon
 import argparse
-import requests
 from sys import stderr
+
+import requests
 
 
 def do_status(args):

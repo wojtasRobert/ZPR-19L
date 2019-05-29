@@ -13,7 +13,7 @@ namespace resmond {
 
         /*!
          * Spawns a child process and adds it to the manager.
-         * @param args same as boost::process::child
+         * @param command the command to be executed
          * @return new child's id
          */
         int spawn(std::string command);

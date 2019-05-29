@@ -37,11 +37,11 @@ namespace resmond {
 
         void respondWithError(const std::shared_ptr<HttpServer::Response> &response, const std::string &msg);
 
-        void spawnHandler(Response response, Request request);
+        void spawnHandler(const Response& response, const Request& request);
 
-        void terminateHandler(Response response, Request request);
+        void terminateHandler(const Response& response, const Request& request);
 
-        void statusHandler(Response response, Request request);
+        void statusHandler(const Response& response, const Request& request);
 
         std::thread serverThread;
         HttpServer server;
