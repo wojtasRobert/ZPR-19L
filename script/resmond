@@ -9,24 +9,40 @@ import requests
 def do_status(args):
     response: requests.Response = requests.post('http://127.0.0.1:8081/status')
 
-    print("{:>6}\t{:>5}\t{:>5}\t{}".format("ID", "CPU%", "MEM%", "COMMAND"))
+    print("{:>7}\t{:>7}\t{:>7}\t{:>7}\t{:>7}\t{}".format("ID", "CPU%", "MEM%", "CPU%LIM", "MEM%LIM", "COMMAND"))
     for child in response.json()['children']:
-        print("{id:6d}\t{cpu:5.1f}\t{memory:5.1f}\t{command}".format(
+        print("{id:6d}\t{cpu:7.1f}\t{memory:7.1f}\t{cpu_limit:7.1f}\t{memory_limit:7.1f}\t{command}".format(
             id=int(child['id']),
             cpu=float(child['resources']['cpu']),
             memory=float(child['resources']['memory']),
+            cpu_limit=float(child['limits']['cpu']),
+            memory_limit=float(child['limits']['memory']),
             command=child['command'],
         ))
 
 
 def do_spawn(args):
-    response: requests.Response = requests.post('http://127.0.0.1:8081/spawn', json={'command': args.command})
+    response: requests.Response = requests.post(
+        'http://127.0.0.1:8081/spawn',
+        json={'command': args.command},
+    )
     print(response.json()['id'])
 
 
 def do_terminate(args):
-    response: requests.Response = requests.post('http://127.0.0.1:8081/terminate', json={'id': args.id})
-    print(response.json()['id'])
+    response: requests.Response = requests.post(
+        'http://127.0.0.1:8081/terminate',
+        json={'id': args.id},
+    )
+    print("OK")
+
+
+def do_limits(args):
+    response: requests.Response = requests.post(
+        'http://127.0.0.1:8081/limits',
+        json={'id': args.id, 'limits': {'cpu': args.cpu, 'memory': args.memory}},
+    )
+    print("OK")
 
 
 if __name__ == '__main__':
@@ -44,10 +60,16 @@ if __name__ == '__main__':
     parser_terminate.add_argument('id')
     parser_terminate.set_defaults(func=do_terminate)
 
+    parser_limits = subparsers.add_parser('limits')
+    parser_limits.add_argument('id')
+    parser_limits.add_argument('--cpu', '-c')
+    parser_limits.add_argument('--memory', '-m')
+    parser_limits.set_defaults(func=do_limits)
+
     args = parser.parse_args()
     try:
         args.func(args)
-    except AttributeError:
-        parser.print_help()
+    # except AttributeError:
+    #     parser.print_help()
     except requests.exceptions.ConnectionError:
         print("Could not connect to the daemon. Is it running?", file=stderr)

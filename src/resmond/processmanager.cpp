@@ -3,12 +3,15 @@
 
 namespace resmond {
 
+    ProcessManager::ProcessManager(const std::shared_ptr<LimitManager> &limitManager) : limitManager(limitManager) {}
+
     void ProcessManager::terminate(int id) {
         std::lock_guard<std::mutex> lock(childrenMutex);
         if (!children.count(id)) {
             throw resmond::NoSuchChildError();
         }
         children.erase(id);
+        limitManager->clearLimits(id);
     }
 
     const std::map<pid_t, ProcessManager::Child> &ProcessManager::getChildren() const {

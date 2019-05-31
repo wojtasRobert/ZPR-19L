@@ -1,11 +1,11 @@
 #include <iostream>
 #include <boost/program_options.hpp>
 #include <server_http.hpp>
+
 #include <resmond/clientinterface.hpp>
-#include <sys/types.h>
-#include <sys/sysinfo.h>
+#include <resmond/processmanager.hpp>
 #include <resmond/resourcemonitor.hpp>
-#include <resmond/resourcemonitor.hpp>
+#include <resmond/limitmanager.hpp>
 
 namespace po = boost::program_options;
 
@@ -33,7 +33,8 @@ int main(int argc, char *argv[]) {
         std::cout << "Hello, unknown.\n";
     }
 
-    auto processManager = std::make_shared<resmond::ProcessManager>();
+    auto limitManager = std::make_shared<resmond::LimitManager>();
+    auto processManager = std::make_shared<resmond::ProcessManager>(limitManager);
     auto resourceMonitor = std::make_shared<resmond::ResourceMonitor>(processManager);
 
     // FOR DEBUGGING PURPOSES
@@ -44,17 +45,17 @@ int main(int argc, char *argv[]) {
             resourceMonitor->update();
             for (const auto &process : resourceMonitor->getResourceUsage()) {
                 std::cout
-                << process.first << "\t"
-                << std::get<0>(process.second) << "\t"
-                << std::get<1>(process.second) << "\t"
-                << std::endl;
+                    << process.first << "\t"
+                    << std::get<0>(process.second) << "\t"
+                    << std::get<1>(process.second) << "\t"
+                    << std::endl;
             }
             std::cout << std::endl;
             std::this_thread::sleep_for(1s);
         }
     }); // <-- FOR DEBUGGING PURPOSES
 
-    resmond::ClientInterface clientInterface("127.0.0.1", 8081, processManager, resourceMonitor);
+    resmond::ClientInterface clientInterface("127.0.0.1", 8081, processManager, resourceMonitor, limitManager);
     clientInterface.joinServerThread();
 
     return 0;

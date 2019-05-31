@@ -5,11 +5,15 @@
 #include <vector>
 #include <boost/process.hpp>
 
+#include <resmond/limitmanager.hpp>
+
 namespace resmond {
 
     class ProcessManager {
     public:
         typedef std::tuple<std::shared_ptr<boost::process::child>, std::string> Child;
+
+        ProcessManager(const std::shared_ptr<LimitManager> &limitManager);
 
         /*!
          * Spawns a child process and adds it to the manager.
@@ -29,6 +33,7 @@ namespace resmond {
 
 
     private:
+        std::shared_ptr<resmond::LimitManager> limitManager;
         std::map<pid_t, Child> children;
         mutable std::mutex childrenMutex;
     };

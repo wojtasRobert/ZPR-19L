@@ -9,9 +9,13 @@ namespace resmond {
     ClientInterface::ClientInterface(
         const std::string &address,
         unsigned short port,
-        std::shared_ptr<ProcessManager> processManager,
-        std::shared_ptr<ResourceMonitor> resourceMonitor
-    ) : processManager(processManager), resourceMonitor(resourceMonitor) {
+        const std::shared_ptr<ProcessManager> &processManager,
+        const std::shared_ptr<ResourceMonitor> &resourceMonitor,
+        const std::shared_ptr<LimitManager> &limitManager
+    ) :
+    processManager(processManager),
+    resourceMonitor(resourceMonitor),
+    limitManager(limitManager) {
         initServer(address, port);
         initEndpoints();
         start();
@@ -48,6 +52,7 @@ namespace resmond {
         server.resource["^/spawn$"]["POST"] = [this](Response res, Request req) { spawnHandler(res, req); };
         server.resource["^/terminate$"]["POST"] = [this](Response res, Request req) { terminateHandler(res, req); };
         server.resource["^/status$"]["POST"] = [this](Response res, Request req) { statusHandler(res, req); };
+        server.resource["^/limits$"]["POST"] = [this](Response res, Request req) { limitsHandler(res, req); };
     }
 
     void ClientInterface::respondWithError(
@@ -103,12 +108,15 @@ namespace resmond {
             if (!std::get<0>(child.second)->running()) {
                 continue;
             }
-            boost::property_tree::ptree cpt, usage;
+            boost::property_tree::ptree cpt, usage, limits;
             cpt.put("id", child.first);
             cpt.put("command", std::get<1>(child.second));
             usage.put("cpu", std::get<0>(resourceUsage.at(child.first)));
             usage.put("memory", std::get<1>(resourceUsage.at(child.first)));
             cpt.add_child("resources", usage);
+            limits.put("cpu", limitManager->getCpuLimit(child.first));
+            limits.put("memory", limitManager->getMemoryLimit(child.first));
+            cpt.add_child("limits", limits);
 
             children.push_back(std::make_pair("", cpt));
         }
@@ -118,6 +126,29 @@ namespace resmond {
         std::stringstream ss;
         boost::property_tree::json_parser::write_json(ss, response_pt);
         response->write(ss.str());
+    }
+
+    void ClientInterface::limitsHandler(const Response &response, const Request &request) {
+        boost::property_tree::ptree pt;
+        boost::property_tree::read_json(request->content, pt);
+
+        auto id = pt.get<pid_t>("id");
+
+        try {
+            auto cpuLimit = pt.get_child("limits").get<float>("cpu");
+            limitManager->setCpuLimit(id, cpuLimit);
+        } catch (std::exception &e) {
+            response->write("OK");
+        }
+
+        try {
+            auto memoryLimit = pt.get_child("limits").get<float>("memory");
+            limitManager->setMemoryLimit(id, memoryLimit);
+        } catch (std::exception &e) {
+            response->write("OK");
+        }
+
+        response->write("OK");
     }
 
 }

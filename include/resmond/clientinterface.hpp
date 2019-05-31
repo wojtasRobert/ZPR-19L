@@ -7,6 +7,7 @@
 
 #include <resmond/processmanager.hpp>
 #include <resmond/resourcemonitor.hpp>
+#include <resmond/limitmanager.hpp>
 
 using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 
@@ -17,8 +18,9 @@ namespace resmond {
         ClientInterface(
             const std::string &address,
             unsigned short port,
-            std::shared_ptr<ProcessManager> processManager,
-            std::shared_ptr<ResourceMonitor> resourceMonitor
+            const std::shared_ptr<ProcessManager> &processManager,
+            const std::shared_ptr<ResourceMonitor> &resourceMonitor,
+            const std::shared_ptr<LimitManager> &limitManager
         );
 
         void start();
@@ -43,10 +45,13 @@ namespace resmond {
 
         void statusHandler(const Response& response, const Request& request);
 
+        void limitsHandler(const Response& response, const Request& request);
+
         std::thread serverThread;
         HttpServer server;
         std::shared_ptr<ProcessManager> processManager;
         std::shared_ptr<ResourceMonitor> resourceMonitor;
+        std::shared_ptr<LimitManager> limitManager;
     };
 
 }

@@ -4,6 +4,7 @@
 
 #include <fcntl.h>
 #include <boost/shared_ptr.hpp>
+
 #include <resmond/processmanager.hpp>
 
 namespace resmond {
