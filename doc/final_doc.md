@@ -64,3 +64,60 @@ Po wykonaniu komend z poprzedniej sekcji i prawidłowej konfiguracji, możemy ur
 ```
 
 
+### Klient
+Klient ```resmond``` jest skryptem napisanym w Pythonie, łączącym się z usługą poprzez protokół TCP. 
+Zapewnia on interfejs poleceń dla użytkownika. W zależności od wpisanej komendy oraz jej atrybutów, klient 
+wysyła zapytania do serwera pod odpowiedni wskazany wcześniej adres. 
+
+#### Komendy dostępne w programie
+
+```bash
+NAME
+    status - wyświetl informacje 
+    
+SYNOPSIS
+    status
+    
+DESCRIPTION
+    Status wyświetla informacje o aktualnym stanie monitora zasobów. Po wywołaniu komendy drukowana 
+    jest lista procesów będących pod obserwacją wraz ze wszystkimi atrybutami (id procesu, zużycie CPU, 
+    MEM, limity CPU, MEM, nazwa polecenia. 
+    
+```
+
+```bash
+NAME
+    spawn - utwórz i monitoruj
+    
+SYNOPSIS
+    spawn < command > 
+    
+DESCRIPTION
+    Komenda spawn służy do utworzenia procesu oraz podpięcia go do monitora zasobów. Po utworzeniu 
+    można mamy dostęp do informacji na temat zużycia zasobów przez proces.    
+```
+
+```bash
+NAME
+    terminate - usuń proces z monitorowanych
+    
+SYNOPSIS
+    terminate [ id ] 
+    
+DESCRIPTION
+    Komenda terminate służy do usunięcia z listy procesów obserwowanych przez monitor zasobów oraz 
+    wyczyszczenie zdefiniowanych dla procesu limitów.
+```
+
+```bash
+NAME
+    limits - nałóż limity na proces
+    
+SYNOPSIS
+    limits [ id ] [--cpu, -c] [ float ] [--memory, -m] [ float ]
+    
+DESCRIPTION
+    Komenda limits umożliwia nałożenie ograniczeń na zużycie zasobów przez procesy. Istnieje możliwość 
+    nałożenia ograniczeń na każdy zasób z osobna. Wartości podawane przez użytkownika powinny być w zakresie 
+    od 0 do 100 - są to wartości procentowe.
+```
