@@ -49,6 +49,7 @@ namespace resmond {
     }
 
     void ClientInterface::initEndpoints() {
+        server.resource["^/ping"]["POST"] = [this](Response res, Request req) { res->write("pong"); };
         server.resource["^/spawn$"]["POST"] = [this](Response res, Request req) { spawnHandler(res, req); };
         server.resource["^/terminate$"]["POST"] = [this](Response res, Request req) { terminateHandler(res, req); };
         server.resource["^/status$"]["POST"] = [this](Response res, Request req) { statusHandler(res, req); };
