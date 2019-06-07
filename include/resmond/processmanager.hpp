@@ -29,6 +29,9 @@ namespace resmond {
          */
         void terminate(int id);
 
+        /*!
+         * @return map of children processes and their IDs.
+         */
         const std::map<pid_t, Child> &getChildren() const;
 
 
