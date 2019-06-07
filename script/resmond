@@ -34,6 +34,9 @@ def do_terminate(args):
         'http://127.0.0.1:8081/terminate',
         json={'id': args.id},
     )
+    if response.status_code != 200:
+        print('ERROR', response.json()['msg'])
+        return
     print("OK")
 
 
@@ -42,6 +45,9 @@ def do_limits(args):
         'http://127.0.0.1:8081/limits',
         json={'id': args.id, 'limits': {'cpu': args.cpu, 'memory': args.memory}},
     )
+    if response.status_code != 200:
+        print('ERROR', response.json()['msg'])
+        return
     print("OK")
 
 

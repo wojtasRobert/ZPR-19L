@@ -61,7 +61,8 @@ namespace resmond {
                 id,
                 std::get<1>(processManager->getChildren().at(id)),
                 "cpu",
-                cpuLimit
+                cpuLimit,
+                cpuUsage
             );
         }
 
@@ -70,7 +71,8 @@ namespace resmond {
                 id,
                 std::get<1>(processManager->getChildren().at(id)),
                 "memory",
-                memoryLimit
+                memoryLimit,
+                memoryUsage
             );
         }
     }

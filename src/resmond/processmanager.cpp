@@ -20,7 +20,7 @@ namespace resmond {
     }
 
     int ProcessManager::spawn(std::string command) {
-        auto child = std::make_shared<boost::process::child>(command);
+        auto child = std::make_shared<boost::process::child>(command, boost::process::std_out > boost::process::null);
         {
             std::lock_guard<std::mutex> lock(childrenMutex);
             children[child->id()] = std::make_tuple(child, command);

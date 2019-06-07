@@ -92,7 +92,7 @@ namespace resmond {
             processManager->terminate(id);
             response_pt.put("id", id);
         } catch (resmond::NoSuchChildError &) {
-            respondWithError(response, "There is no child the with given id");
+            respondWithError(response, "There is no child with the given id");
         }
 
         std::stringstream ss;
@@ -134,19 +134,16 @@ namespace resmond {
 
         auto id = pt.get<pid_t>("id");
 
-        try {
-            auto cpuLimit = pt.get_child("limits").get<float>("cpu");
-            limitManager->setCpuLimit(id, cpuLimit);
-        } catch (std::exception &e) {
-            response->write("OK");
+        if (processManager->getChildren().count(id) == 0) {
+            respondWithError(response, "There is no child with the given id");
+            return;
         }
 
-        try {
-            auto memoryLimit = pt.get_child("limits").get<float>("memory");
-            limitManager->setMemoryLimit(id, memoryLimit);
-        } catch (std::exception &e) {
-            response->write("OK");
-        }
+        auto cpuLimit = pt.get_child("limits").get<float>("cpu");
+        limitManager->setCpuLimit(id, cpuLimit);
+
+        auto memoryLimit = pt.get_child("limits").get<float>("memory");
+        limitManager->setMemoryLimit(id, memoryLimit);
 
         response->write("OK");
     }

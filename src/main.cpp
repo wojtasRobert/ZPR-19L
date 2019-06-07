@@ -34,29 +34,21 @@ int main(int argc, char *argv[]) {
     }
 
     auto limitManager = std::make_shared<resmond::LimitManager>();
-    auto emailSender = std::make_shared<resmond::EmailSender>("../scripts/mailer.py", 5s);
+    auto emailSender = std::make_shared<resmond::EmailSender>("../script/mailer", 5min);
     auto processManager = std::make_shared<resmond::ProcessManager>(limitManager);
     auto resourceMonitor = std::make_shared<resmond::ResourceMonitor>(emailSender, processManager, limitManager);
 
-    // FOR DEBUGGING PURPOSES
-    processManager->spawn("sleep 1000");
-    std::cout << std::endl << "PID\tCPU%\tMEM%\tCOMMAND" << std::endl << std::endl;
     std::thread resourceMonitorThread([&resourceMonitor]() {
         while (true) {
             resourceMonitor->update();
-            for (const auto &process : resourceMonitor->getResourceUsage()) {
-                std::cout
-                    << process.first << "\t"
-                    << std::get<0>(process.second) << "\t"
-                    << std::get<1>(process.second) << "\t"
-                    << std::endl;
-            }
-            std::cout << std::endl;
             std::this_thread::sleep_for(1s);
         }
-    }); // <-- FOR DEBUGGING PURPOSES
+    });
 
     resmond::ClientInterface clientInterface("127.0.0.1", 8081, processManager, resourceMonitor, limitManager);
+
+    std::cout << "Daemon started." << std::endl;
+
     clientInterface.joinServerThread();
 
     return 0;

@@ -1,19 +1,22 @@
+#!/bin/env python3
+
 import argparse
 import configparser
-import smtplib, ssl
+import smtplib
+import ssl
 
 TITLE = "Resmond -- limit violated ({command})"
 
 MESSAGE = """
 Hi,
 
-The process `{command}` with pid `{pid}` just violated its {resource} limit: {limit}%.
+The process `{command}` with pid `{pid}` just violated its {resource} limit: {limit:.2f}% with value: {usage:.2f}%
 
 Cheers
 Resmond
 """
 
-CONFIG_FILE = 'mailer.ini'
+CONFIG_FILE = '../script/mailer.ini'
 
 if __name__ == '__main__':
     # Context
@@ -21,7 +24,8 @@ if __name__ == '__main__':
     parser.add_argument('pid')
     parser.add_argument('command')
     parser.add_argument('resource')
-    parser.add_argument('limit')
+    parser.add_argument('limit', type=float)
+    parser.add_argument('usage', type=float)
     args = parser.parse_args()
     msg_context = vars(args)
 
@@ -40,8 +44,6 @@ if __name__ == '__main__':
 
     context = ssl.create_default_context()
     with smtplib.SMTP(config['DEFAULT']['server'], config['DEFAULT']['port']) as server:
-        server.ehlo()  # Can be omitted
         server.starttls(context=context)
-        server.ehlo()  # Can be omitted
         server.login(config['DEFAULT']['from'], config['DEFAULT']['password'])
         server.sendmail(config['DEFAULT']['from'], config['DEFAULT']['to'], MESSAGE.format(**msg_context))

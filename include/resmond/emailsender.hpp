@@ -11,7 +11,8 @@ namespace resmond {
     public:
         explicit EmailSender(const std::string &mailerCommand, std::chrono::system_clock::time_point::duration cooldown);
 
-        void sendViolationEmail(pid_t pid, const std::string &command, const std::string &resource, float limit);
+        void sendViolationEmail(pid_t pid, const std::string &command, const std::string &resource, float limit,
+                                float usage);
 
     private:
         std::chrono::system_clock::time_point::duration cooldown;
