@@ -9,6 +9,9 @@
 
 namespace resmond {
 
+    /*!
+     * Class which enables creating objects to manage processes. Primary tasks for ProcessManager object are spawning and terminating children processes.
+     */
     class ProcessManager {
     public:
         typedef std::tuple<std::shared_ptr<boost::process::child>, std::string> Child;
