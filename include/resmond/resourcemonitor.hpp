@@ -9,6 +9,11 @@
 
 namespace resmond {
 
+    /*!
+     * Class for monitoring resources of processes.
+     * Class's instance gets value of MEM/CPU usage from program top and updates it periodically.
+     * In case of violating limits, notification is sent.
+     */
     class ResourceMonitor {
     public:
         ResourceMonitor(const std::shared_ptr<EmailSender> &emailSender,

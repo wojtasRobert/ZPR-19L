@@ -14,9 +14,10 @@ using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 namespace resmond {
 
     /*!
-     * Class of which object represents a server which conducts different operations after Client's requests. Created object starts and joins a new server thread.
-     * Thanks to dependency injection it is possible for ClientInterface object to call methods from other modules. Given a request, object is able to handle different
-     * situations depending on request's type.
+     * Class of which object represents a server which conducts different operations after Client's requests.
+     * Created object starts and joins a new server thread.
+     * Thanks to dependency injection it is possible for ClientInterface object to call methods from other modules.
+     * Given a request, object is able to handle different situations depending on request's type.
      */
     class ClientInterface {
     public:

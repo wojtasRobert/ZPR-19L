@@ -155,4 +155,3 @@ ok. 20 h
 * Brak kolejki wiadomości mailowych do wysłania.
 * Brak grupowania wiadomości
 * Możliwe jest zrezygnowanie z wstrzykiwania zależności na rzecz agregacji dla niektórych klas.
-* 

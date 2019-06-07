@@ -10,7 +10,8 @@
 namespace resmond {
 
     /*!
-     * Class which enables creating objects to manage processes. Primary tasks for ProcessManager object are spawning and terminating children processes.
+     * Class which enables creating objects to manage processes.
+     * Primary tasks for ProcessManager object are spawning and terminating children processes.
      */
     class ProcessManager {
     public:

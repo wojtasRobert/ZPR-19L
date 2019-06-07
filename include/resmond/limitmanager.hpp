@@ -9,6 +9,11 @@
 
 namespace resmond {
 
+    /*!
+     * Class which allows managing resources limits for processes.
+     * Provides methods for setting and getting values of both resources.
+     * If needed, limits can also be cleared.
+     */
     class LimitManager {
     public:
         LimitManager();

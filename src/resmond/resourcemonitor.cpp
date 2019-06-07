@@ -7,7 +7,6 @@
 namespace resmond {
 
     void ResourceMonitor::update() {
-        // TODO: simplify this mess
         namespace bp = boost::process;
 
         auto children = processManager->getChildren();
