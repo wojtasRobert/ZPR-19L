@@ -26,6 +26,9 @@ def do_spawn(args):
         'http://127.0.0.1:8081/spawn',
         json={'command': args.command},
     )
+    if response.status_code != 200:
+        print('ERROR', response.json()['msg'])
+        return
     print(response.json()['id'])
 
 

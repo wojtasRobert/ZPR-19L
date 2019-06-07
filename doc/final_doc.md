@@ -90,7 +90,7 @@ NAME
     spawn - utwórz i monitoruj
     
 SYNOPSIS
-    spawn < command > 
+    spawn command
     
 DESCRIPTION
     Komenda spawn służy do utworzenia procesu oraz podpięcia go do monitora zasobów. Po utworzeniu 
@@ -102,7 +102,7 @@ NAME
     terminate - usuń proces z monitorowanych
     
 SYNOPSIS
-    terminate [ id ] 
+    terminate id
     
 DESCRIPTION
     Komenda terminate służy do usunięcia z listy procesów obserwowanych przez monitor zasobów oraz 
@@ -114,13 +114,17 @@ NAME
     limits - nałóż limity na proces
     
 SYNOPSIS
-    limits [ id ] [--cpu, -c] [ float ] [--memory, -m] [ float ]
+    limits id [--cpu, -c float ] [--memory, -m float ]
     
 DESCRIPTION
     Komenda limits umożliwia nałożenie ograniczeń na zużycie zasobów przez procesy. Istnieje możliwość 
     nałożenia ograniczeń na każdy zasób z osobna. Wartości podawane przez użytkownika powinny być w zakresie 
     od 0 do 100 - są to wartości procentowe.
 ```
+
+# Diagram klas
+
+![](diagram_klas.png)
 
 # Statystyki
 
@@ -143,4 +147,12 @@ DESCRIPTION
 
 ## Czas poświęcony na projekt
 
-ok. 15 h
+ok. 20 h
+
+# Problemy i przemyślenia
+
+* Niewielka zmiana struktury logicznej projektu względem dok. wst.
+* Brak kolejki wiadomości mailowych do wysłania.
+* Brak grupowania wiadomości
+* Możliwe jest zrezygnowanie z wstrzykiwania zależności na rzecz agregacji dla niektórych klas.
+* 
