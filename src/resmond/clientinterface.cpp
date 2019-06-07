@@ -139,11 +139,18 @@ namespace resmond {
             return;
         }
 
-        auto cpuLimit = pt.get_child("limits").get<float>("cpu");
-        limitManager->setCpuLimit(id, cpuLimit);
+        auto child = pt.get_child_optional("limits");
 
-        auto memoryLimit = pt.get_child("limits").get<float>("memory");
-        limitManager->setMemoryLimit(id, memoryLimit);
+        if (child.is_initialized()) {
+            auto cpuLimit = child.get().get_optional<float>("cpu");
+            if (cpuLimit.is_initialized()) {
+                limitManager->setCpuLimit(id, cpuLimit.get());
+            }
+            auto memoryLimit = child.get().get_optional<float>("memory");
+            if (memoryLimit.is_initialized()) {
+                limitManager->setMemoryLimit(id, memoryLimit.get());
+            }
+        }
 
         response->write("OK");
     }
