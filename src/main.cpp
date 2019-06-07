@@ -34,8 +34,9 @@ int main(int argc, char *argv[]) {
     }
 
     auto limitManager = std::make_shared<resmond::LimitManager>();
+    auto emailSender = std::make_shared<resmond::EmailSender>("../scripts/mailer.py", 5s);
     auto processManager = std::make_shared<resmond::ProcessManager>(limitManager);
-    auto resourceMonitor = std::make_shared<resmond::ResourceMonitor>(processManager);
+    auto resourceMonitor = std::make_shared<resmond::ResourceMonitor>(emailSender, processManager, limitManager);
 
     // FOR DEBUGGING PURPOSES
     processManager->spawn("sleep 1000");

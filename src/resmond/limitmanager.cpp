@@ -3,6 +3,10 @@
 
 namespace resmond {
 
+    LimitManager::LimitManager() {
+
+    }
+
     float LimitManager::getCpuLimit(pid_t id) const {
         std::lock_guard<std::mutex> lock(resourceLimitsMutex);
         if (resourceLimits.find(id) == resourceLimits.end() || std::get<0>(resourceLimits.at(id)) == 0) {

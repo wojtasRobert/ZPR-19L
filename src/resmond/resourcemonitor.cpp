@@ -6,9 +6,6 @@
 
 namespace resmond {
 
-    ResourceMonitor::ResourceMonitor(const std::shared_ptr<ProcessManager> &processManager) : processManager(
-        processManager) {}
-
     void ResourceMonitor::update() {
         // TODO: simplify this mess
         namespace bp = boost::process;
@@ -42,6 +39,7 @@ namespace resmond {
                 int pid = std::stoi(result[0]);
                 if (std::get<0>(children[pid])->running()) {
                     resourceUsage[pid] = {std::stod(result[8]), std::stod(result[9])};
+                    sendIfLimitViolated(pid, std::get<0>(resourceUsage[pid]), std::get<1>(resourceUsage[pid]));
                 }
             }
         }
@@ -53,5 +51,33 @@ namespace resmond {
         std::lock_guard<std::mutex> lock(resourceUsageMutex);
         return resourceUsage;
     }
+
+    void ResourceMonitor::sendIfLimitViolated(pid_t id, float cpuUsage, float memoryUsage) {
+        auto cpuLimit = limitManager->getCpuLimit(id);
+        auto memoryLimit = limitManager->getMemoryLimit(id);
+
+        if (cpuUsage > cpuLimit) {
+            emailSender->sendViolationEmail(
+                id,
+                std::get<1>(processManager->getChildren().at(id)),
+                "cpu",
+                cpuLimit
+            );
+        }
+
+        if (cpuUsage > cpuLimit) {
+            emailSender->sendViolationEmail(
+                id,
+                std::get<1>(processManager->getChildren().at(id)),
+                "memory",
+                memoryLimit
+            );
+        }
+    }
+
+    ResourceMonitor::ResourceMonitor(const std::shared_ptr<EmailSender> &emailSender,
+                                     const std::shared_ptr<ProcessManager> &processManager,
+                                     const std::shared_ptr<LimitManager> &limitManager)
+        : emailSender(emailSender), processManager(processManager), limitManager(limitManager) {}
 
 }

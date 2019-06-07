@@ -5,11 +5,13 @@
 #include <map>
 #include <mutex>
 #include <memory>
+#include <resmond/emailsender.hpp>
 
 namespace resmond {
 
     class LimitManager {
     public:
+        LimitManager();
 
         /*!
          * Returns value of CPU usage limit of given child.
@@ -46,6 +48,7 @@ namespace resmond {
         void clearLimits(pid_t id);
 
     private:
+
         std::map<pid_t, std::tuple<float, float>> resourceLimits;
         mutable std::mutex resourceLimitsMutex;
     };
