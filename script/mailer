@@ -43,7 +43,10 @@ if __name__ == '__main__':
         config.read(CONFIG_FILE)
 
     context = ssl.create_default_context()
-    with smtplib.SMTP(config['DEFAULT']['server'], config['DEFAULT']['port']) as server:
-        server.starttls(context=context)
-        server.login(config['DEFAULT']['from'], config['DEFAULT']['password'])
-        server.sendmail(config['DEFAULT']['from'], config['DEFAULT']['to'], MESSAGE.format(**msg_context))
+    try:
+        with smtplib.SMTP(config['DEFAULT']['server'], config['DEFAULT']['port']) as server:
+            server.starttls(context=context)
+            server.login(config['DEFAULT']['from'], config['DEFAULT']['password'])
+            server.sendmail(config['DEFAULT']['from'], config['DEFAULT']['to'], MESSAGE.format(**msg_context))
+    except Exception:
+        print("Could not send the email.")
