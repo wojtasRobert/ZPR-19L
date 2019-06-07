@@ -121,3 +121,26 @@ DESCRIPTION
     nałożenia ograniczeń na każdy zasób z osobna. Wartości podawane przez użytkownika powinny być w zakresie 
     od 0 do 100 - są to wartości procentowe.
 ```
+
+# Statystyki
+
+## Liczba linii kodu
+
+| Rozszerzenie | Pliki  | Linie   |
+| ------------ | :----: | :-----: |
+| cpp          | 10     | 451     |
+| hpp          | 6      | 269     |
+| **Suma**     | **16** | **720** |
+
+## Liczba testów
+
+* 3 test cases
+* 12 checks
+
+## Pokrycie kodu testami
+
+![](cov.png)
+
+## Czas poświęcony na projekt
+
+ok. 15 h
