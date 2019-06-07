@@ -12,7 +12,7 @@ geometry:
 Resmond (ang. **Res**ource **Mon**itor **D**eamon) jest oprogramowaniem służącym do monitorowania 
 procesów działających w systemie. Program rejestruje wartości zasobów zużywanych przez procesy i 
 informuje o nich dedykowanych użytkowników. Aplikacja została napisana w architekturze klient-serwer. 
-Oba moduły będą pracują lokalnie w obrębie jednego komputera. Komunikacja między klientem i 
+Oba moduły pracują lokalnie w obrębie jednego komputera. Komunikacja między klientem i 
 serwerem realizowana jest z wykorzystaniem protokołu TCP, służącego do przyjmowania poleceń od 
 klienta. 
 
