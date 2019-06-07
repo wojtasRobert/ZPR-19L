@@ -13,8 +13,14 @@ namespace resmond {
     public:
         explicit ResourceMonitor(const std::shared_ptr<ProcessManager> &processManager);
 
+        /*!
+         * Updates information about resources used by monitored processes.
+        */
         void update();
 
+        /*!
+         * @return map of processes and their resource usage.
+         */
         const std::map<pid_t, std::tuple<float, float>> &getResourceUsage() const;
 
     protected:

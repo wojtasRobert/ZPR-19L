@@ -23,10 +23,19 @@ namespace resmond {
             const std::shared_ptr<LimitManager> &limitManager
         );
 
+        /*!
+         * Starts ClientInterface thread.
+         */
         void start();
 
+        /*!
+         * Stops ClientInterface thread.
+         */
         void stop();
 
+        /*!
+         * Joins ClientInterface thread.
+         */
         void joinServerThread();
 
     private:
